@@ -61,7 +61,7 @@ htMetKT6 = cms.EDProducer("ElseMETProducer",
 )
 
 htMetAK5 = cms.EDProducer("ElseMETProducer",
-    src = cms.InputTag("ak5CaloJets"),
+    src = cms.InputTag("ak4CaloJets"),
     METType = cms.string('MET'),
     alias = cms.string('HTMETAK5'),
     noHF = cms.bool(False),
@@ -70,7 +70,7 @@ htMetAK5 = cms.EDProducer("ElseMETProducer",
 )
 
 htMetAK7 = cms.EDProducer("ElseMETProducer",
-    src = cms.InputTag("ak7CaloJets"),
+    src = cms.InputTag("ak8CaloJets"),
     METType = cms.string('MET'),
     alias = cms.string('HTMETAK7'),
     noHF = cms.bool(False),
