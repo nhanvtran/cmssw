@@ -39,12 +39,16 @@ public:
     void initialize(const std::vector<RecoObj> &iRecoObjects);
     std::vector<fastjet::PseudoJet> const & pfParticles() const { return fPFParticles; }    
     std::vector<fastjet::PseudoJet> const & pvParticles() const { return fChargedPV; }        
-    std::vector<double> const & puppiWeights() ;
+    std::vector<double> const & puppiWeights();
+    std::vector<double> const & puppiRawAlphas(){ return fRawAlphas; }
+    std::vector<double> const & puppiAlphas(){ return fVals; }
+    int puppiNAlgos(){ return fNAlgos; }
     std::vector<fastjet::PseudoJet> const & puppiParticles() const { return fPupParticles;}
 
 protected:
     double  goodVar      (fastjet::PseudoJet const &iPart,std::vector<fastjet::PseudoJet> const &iParts, int iOpt,double iRCone);
     void    getRMSAvg    (int iOpt,std::vector<fastjet::PseudoJet> const &iConstits,std::vector<fastjet::PseudoJet> const &iParticles,std::vector<fastjet::PseudoJet> const &iChargeParticles);
+    void    getRawAlphas    (int iOpt,std::vector<fastjet::PseudoJet> const &iConstits,std::vector<fastjet::PseudoJet> const &iParticles,std::vector<fastjet::PseudoJet> const &iChargeParticles);
     double  getChi2FromdZ(double iDZ);
     int     getPuppiId   ( float iPt, float iEta);
     double  var_within_R (int iId, const std::vector<fastjet::PseudoJet> & particles, const fastjet::PseudoJet& centre, double R);  
@@ -55,6 +59,7 @@ protected:
     std::vector<fastjet::PseudoJet> fPupParticles;
     std::vector<double>    fWeights;
     std::vector<double>    fVals;
+    std::vector<double>    fRawAlphas;
     bool   fApplyCHS;
     bool   fUseExp;
     double fNeutralMinPt;
