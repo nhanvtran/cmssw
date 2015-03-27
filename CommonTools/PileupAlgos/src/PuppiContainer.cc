@@ -32,6 +32,8 @@ void PuppiContainer::initialize(const std::vector<RecoObj> &iRecoObjects) {
     fWeights      .resize(0);
     fVals.resize(0);
     fRawAlphas.resize(0);
+    fAlphaMed     .resize(0);
+    fAlphaRMS     .resize(0);
     //fChargedNoPV.resize(0);
     //Link to the RecoObjects
     fPVFrac = 0.;
@@ -189,6 +191,8 @@ std::vector<double> const & PuppiContainer::puppiWeights() {
         int  pPupId   = getPuppiId(fRecoParticles[i0].pt,fRecoParticles[i0].eta);
         if(pPupId == -1) {
             fWeights .push_back(pWeight);
+            fAlphaMed.push_back(-10);
+            fAlphaRMS.push_back(-10);            
             continue;
         }
         // fill the p-values
@@ -215,6 +219,8 @@ std::vector<double> const & PuppiContainer::puppiWeights() {
         if(pWeight                         < fPuppiWeightCut) pWeight = 0;  //==> Elminate the low Weight stuff
         if(pWeight*fPFParticles[i0].pt()   < fPuppiAlgo[pPupId].neutralPt(fNPV) && fRecoParticles[i0].id == 0 ) pWeight = 0;  //threshold cut on the neutral Pt
         fWeights .push_back(pWeight);
+        fAlphaMed.push_back(fPuppiAlgo[pPupId].fMedian[0]);
+        fAlphaRMS.push_back(fPuppiAlgo[pPupId].fRMS   [0]);        
         //Now get rid of the thrown out weights for the particle collection
         if(std::abs(pWeight) < std::numeric_limits<double>::denorm_min() ) continue;
         //Produce

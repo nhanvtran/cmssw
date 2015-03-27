@@ -42,6 +42,10 @@ public:
     std::vector<double> const & puppiWeights();
     std::vector<double> const & puppiRawAlphas(){ return fRawAlphas; }
     std::vector<double> const & puppiAlphas(){ return fVals; }
+    // const std::vector<double> puppiAlpha   () {return fAlpha;}
+    std::vector<double> const & puppiAlphasMed() {return fAlphaMed;}
+    std::vector<double> const & puppiAlphasRMS() {return fAlphaRMS;}
+
     int puppiNAlgos(){ return fNAlgos; }
     std::vector<fastjet::PseudoJet> const & puppiParticles() const { return fPupParticles;}
 
@@ -60,6 +64,9 @@ protected:
     std::vector<double>    fWeights;
     std::vector<double>    fVals;
     std::vector<double>    fRawAlphas;
+    std::vector<double>    fAlphaMed;
+    std::vector<double>    fAlphaRMS;
+
     bool   fApplyCHS;
     bool   fUseExp;
     double fNeutralMinPt;

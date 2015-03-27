@@ -26,6 +26,9 @@ public:
   inline bool   isCharged  ( unsigned int iAlgo) const { return fCharged.at(iAlgo); }
   inline double coneSize  ( unsigned int iAlgo) const { return fConeSize.at(iAlgo); }
   inline double neutralPt  (int iNPV) const { return fNeutralPtMin + iNPV * fNeutralPtSlope; }
+  std::vector<double> fRMS;
+  std::vector<double> fMedian;
+
 
 private:  
   unsigned int   fNAlgos;
@@ -43,8 +46,6 @@ private:
   std::vector<double> fConeSize;
   std::vector<double> fRMSPtMin;
   std::vector<double> fRMSScaleFactor;
-  std::vector<double> fRMS;
-  std::vector<double> fMedian;
   std::vector<double> fMean;
   std::vector<int>    fNCount;
 };
