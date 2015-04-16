@@ -19,7 +19,7 @@ puppiForward = cms.VPSet(
                  applyLowPUCorr = cms.bool(True),
                  combOpt        = cms.int32(0),
                  cone           = cms.double(0.3),
-                 rmsPtMin       = cms.double(0.5),
+                 rmsPtMin       = cms.double(0.1),
                  rmsScaleFactor = cms.double(1.0)
                  )
                 )
@@ -39,24 +39,30 @@ puppi = cms.EDProducer("PuppiProducer",#cms.PSet(#"PuppiProducer",
                          etaMin = cms.double(0.),
                          etaMax = cms.double( 2.5),
                          ptMin  = cms.double(0.),
-                         MinNeutralPt   = cms.double(0.2),
+                         MinNeutralPt   = cms.double(1.2),
                          MinNeutralPtSlope   = cms.double(0.02),
+                         RMSEtaSF = cms.double(1.0),
+                         MedEtaSF = cms.double(1.0),
                          puppiAlgos = puppiCentral
                         ),
                         cms.PSet( 
                          etaMin = cms.double(2.5),
                          etaMax = cms.double(3.0),
                          ptMin  = cms.double(0.0),
-                         MinNeutralPt        = cms.double(1.0),
+                         MinNeutralPt        = cms.double(3.0),
                          MinNeutralPtSlope   = cms.double(0.005),
+                         RMSEtaSF = cms.double(1.545),
+                         MedEtaSF = cms.double(0.845),
                          puppiAlgos = puppiForward
                         ),
                         cms.PSet( 
                          etaMin = cms.double(3.0),
                          etaMax = cms.double(10.0),
                          ptMin  = cms.double(0.0),
-                         MinNeutralPt        = cms.double(1.5),
+                         MinNeutralPt        = cms.double(2.8),
                          MinNeutralPtSlope   = cms.double(0.005),
+                         RMSEtaSF = cms.double(1.18),
+                         MedEtaSF = cms.double(0.4397),                         
                          puppiAlgos = puppiForward
                        )
                       )
