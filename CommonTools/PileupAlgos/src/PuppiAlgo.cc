@@ -16,7 +16,8 @@ PuppiAlgo::PuppiAlgo(edm::ParameterSet &iConfig) {
     fNeutralPtSlope     = iConfig.getParameter<double>("MinNeutralPtSlope"); // Slope vs #pv
     fRMSEtaSF           = iConfig.getParameter<double>("RMSEtaSF");
     fMedEtaSF           = iConfig.getParameter<double>("MedEtaSF");
-
+    fEtaMaxExtrap       = iConfig.getParameter<double>("EtaMaxExtrap");
+    
     std::vector<edm::ParameterSet> lAlgos = iConfig.getParameter<std::vector<edm::ParameterSet> >("puppiAlgos");
     fNAlgos = lAlgos.size();
     //Uber Configurable Puppi
@@ -86,7 +87,7 @@ void PuppiAlgo::add(const fastjet::PseudoJet &iParticle,const double &iVal,const
 
     // added by Nhan -- for all eta regions, compute mean/RMS from the central charged PU
     //std::cout << "std::abs(puppi_register) = " << std::abs(puppi_register) << std::endl;
-    if ((std::abs(iParticle.eta()) < 2) && (std::abs(puppi_register) >= 3)){
+    if ((std::abs(iParticle.eta()) < fEtaMaxExtrap) && (std::abs(puppi_register) >= 3)){
         fPups.push_back(iVal);
         fPupsPV.push_back(iVal);        
         fNCount[iAlgo]++;

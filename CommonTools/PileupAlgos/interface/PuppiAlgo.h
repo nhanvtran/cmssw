@@ -40,6 +40,7 @@ private:
 
   double fRMSEtaSF;
   double fMedEtaSF;
+  double fEtaMaxExtrap;
 
   std::vector<float>  fPups;
   std::vector<float>  fPupsPV;
