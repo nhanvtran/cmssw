@@ -89,9 +89,12 @@ void PuppiAlgo::add(const fastjet::PseudoJet &iParticle,const double &iVal,const
     //std::cout << "std::abs(puppi_register) = " << std::abs(puppi_register) << std::endl;
     if ((std::abs(iParticle.eta()) < fEtaMaxExtrap) && (std::abs(puppi_register) >= 3)){
         fPups.push_back(iVal);
-        fPupsPV.push_back(iVal);        
+        // fPupsPV.push_back(iVal);        
         fNCount[iAlgo]++;
     }
+    // for the low PU case, correction.  for checking that the PU-only median will be below the PV particles
+    if(std::abs(iParticle.eta()) < fEtaMaxExtrap && (std::abs(puppi_register) >=1 && std::abs(puppi_register) <=2)) fPupsPV.push_back(iVal);
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -108,11 +111,6 @@ void PuppiAlgo::computeMedRMS(const unsigned int &iAlgo,const double &iPVFrac) {
     for(unsigned int i0 = 0; i0 < iAlgo; i0++) lNBefore += fNCount[i0];
     std::sort(fPups.begin()+lNBefore,fPups.begin()+lNBefore+fNCount[iAlgo]);
     
-    // some correction that phil added...
-    double lCorr = 1.;
-    //if(!fCharged[iAlgo] && fAdjust[iAlgo]) lCorr *= 1. - iPVFrac;
-    if(fAdjust[iAlgo]) lCorr *= 1. - iPVFrac;
-
     // in case you have alphas == 0
     int lNum0 = 0;
     for(int i0 = lNBefore; i0 < lNBefore+fNCount[iAlgo]; i0++) {
@@ -146,12 +144,13 @@ void PuppiAlgo::computeMedRMS(const unsigned int &iAlgo,const double &iPVFrac) {
     fMedian[iAlgo] *= fMedEtaSF;
     //if(!fCharged[iAlgo]) std::cout << " Process : " << iAlgo  << " Median : " << fMedian[iAlgo] << " +/- " << fRMS[iAlgo]  << " -- Begin : " << lNBefore << " -- Total :  " << fNCount[iAlgo] << " -- 50% " << lNHalfway  << " Fraction less than @ Median : " << std::endl;
     
-    // if(!fAdjust[iAlgo]) return;
-    // //Adjust the p-value to correspond to the median
-    // std::sort(fPupsPV.begin(),fPupsPV.end());
-    // int lNPV = 0; for(unsigned int i0 = 0; i0 < fPupsPV.size(); i0++) if(fPupsPV[i0] <= lMed ) lNPV++;
-    // double lAdjust = 1.5*double(lNPV)/double(fPupsPV.size()+fNCount[iAlgo]);
-    // if(lAdjust > 0) fMedian[iAlgo] -= sqrt(ROOT::Math::chisquared_quantile(lAdjust,1.)*fRMS[iAlgo]);
+    if(!fAdjust[iAlgo]) return;
+    //Adjust the p-value to correspond to the median
+    std::sort(fPupsPV.begin(),fPupsPV.end());
+    int lNPV = 0; 
+    for(unsigned int i0 = 0; i0 < fPupsPV.size(); i0++) if(fPupsPV[i0] <= lMed ) lNPV++;
+    double lAdjust = 1.5*double(lNPV)/double(fPupsPV.size()+fNCount[iAlgo]);
+    if(lAdjust > 0) fMedian[iAlgo] -= sqrt(ROOT::Math::chisquared_quantile(lAdjust,1.)*fRMS[iAlgo]);
 }
 ////////////////////////////////////////////////////////////////////////////////
 
