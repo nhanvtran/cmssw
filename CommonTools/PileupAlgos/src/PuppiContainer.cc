@@ -223,6 +223,7 @@ std::vector<double> const & PuppiContainer::puppiWeights() {
         //Fill and compute the PuppiWeight
         int lNAlgos = fPuppiAlgo[pPupId].numAlgos();
         for(int i1 = 0; i1 < lNAlgos; i1++) pVals.push_back(fVals[lNParticles*i1+i0]);
+
         pWeight = fPuppiAlgo[pPupId].compute(pVals,pChi2);
         //Apply the CHS weights
         if(fRecoParticles[i0].id == 1 && fApplyCHS ) pWeight = 1;
