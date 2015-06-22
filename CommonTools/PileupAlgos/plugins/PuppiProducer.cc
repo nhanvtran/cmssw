@@ -30,6 +30,7 @@
 // ------------------------------------------------------------------------------------------
 PuppiProducer::PuppiProducer(const edm::ParameterSet& iConfig) {
   fPuppiDiagnostics = iConfig.getParameter<bool>("puppiDiagnostics");
+  fPuppiForLeptons = iConfig.getParameter<bool>("puppiForLeptons");
   fUseDZ     = iConfig.getParameter<bool>("UseDeltaZCut");
   fDZCut     = iConfig.getParameter<double>("DeltaZCut");
   fPuppiContainer = std::unique_ptr<PuppiContainer> ( new PuppiContainer(iConfig) );
@@ -108,7 +109,7 @@ void PuppiProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup) {
         pD0        = lPack->dxy();
         closestVtx = &(*(lPack->vertexRef()));
         pVtxId = (lPack->fromPV() != (pat::PackedCandidate::PVUsedInFit));
-        if( (lPack->fromPV() == pat::PackedCandidate::PVLoose) || (lPack->fromPV() == pat::PackedCandidate::PVTight) ){
+        if( ((lPack->fromPV() == pat::PackedCandidate::PVLoose) && (!fPuppiForLeptons)) || (lPack->fromPV() == pat::PackedCandidate::PVTight) ){
         // if( (lPack->fromPV() == pat::PackedCandidate::PVTight) ){  // using only 2 and 3 as charged LV to be consistent with isolation
             pVtxId = 0;
         } 
