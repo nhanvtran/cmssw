@@ -153,8 +153,8 @@ void PuppiAlgo::computeMedRMS(const unsigned int &iAlgo,const double &iPVFrac) {
     for(int i0 = lNBefore; i0 < lNBefore+fNCount[iAlgo]; i0++) {
         fMean[iAlgo] += fPups[i0];
         if(fPups[i0] == 0) continue;
-        if(!fCharged[iAlgo] && fAdjust[iAlgo] && fPups[i0] > lMed) continue;
-        //if(fAdjust[iAlgo] && fPups[i0] > lMed) continue;
+        // if(!fCharged[iAlgo] && fAdjust[iAlgo] && fPups[i0] > lMed) continue;
+        if(fAdjust[iAlgo] && fPups[i0] > lMed) continue;
         lNRMS++;
         fRMS [iAlgo] += (fPups[i0]-lMed)*(fPups[i0]-lMed);
     }
@@ -172,8 +172,11 @@ void PuppiAlgo::computeMedRMS(const unsigned int &iAlgo,const double &iPVFrac) {
         std::sort(fPupsPV.begin(),fPupsPV.end());
         int lNPV = 0; 
         for(unsigned int i0 = 0; i0 < fPupsPV.size(); i0++) if(fPupsPV[i0] <= lMed ) lNPV++;
-        double lAdjust = double(lNPV)/double(fPupsPV.size()+fNCount[iAlgo]);
-        if(lAdjust > 0) fMedian[iAlgo] -= sqrt(ROOT::Math::chisquared_quantile(lAdjust,1.)*fRMS[iAlgo]);
+        double lAdjust = double(lNPV)/double(lNPV+0.5*fNCount[iAlgo]);
+        if(lAdjust > 0) {
+          fMedian[iAlgo] -= sqrt(ROOT::Math::chisquared_quantile(lAdjust,1.)*fRMS[iAlgo]);
+          fRMS[iAlgo]    -= sqrt(ROOT::Math::chisquared_quantile(lAdjust,1.)*fRMS[iAlgo]);
+        }        
     }
 
     // fRMS_perEta[iAlgo]    *= cur_RMSEtaSF;
